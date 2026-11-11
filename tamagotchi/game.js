@@ -5,6 +5,7 @@
 
 const KEY = "terrarium-save-v1";
 const $ = (id) => document.getElementById(id);
+let S = null; // the creature's whole life
 
 /* ---------- state ---------- */
 function freshState() {
