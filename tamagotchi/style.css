@@ -8,7 +8,7 @@
 *{box-sizing:border-box}
 body{
   margin:0; background:var(--paper); color:var(--ink);
-  font-family:"Nunito",system-ui,sans-serif; font-size:1.02rem; line-height:1.5;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif; font-size:1.02rem; line-height:1.5;
 }
 a{color:var(--leaf-deep)}
 button{font-family:inherit}
@@ -18,7 +18,7 @@ button{font-family:inherit}
   max-width:1060px; margin:0 auto; padding:1rem 1.2rem;
 }
 .bar h1{
-  font-family:"Fraunces",Georgia,serif; font-weight:600;
+  font-family:Georgia,serif; font-weight:600;
   font-size:1.7rem; margin:0; letter-spacing:-.01em;
 }
 .home{font-size:.95rem; text-decoration:none; border-bottom:1px solid var(--line)}
@@ -109,7 +109,7 @@ main{max-width:1060px; margin:0 auto; padding:0 1.2rem 2rem;
 .side{display:grid; gap:1.2rem}
 .carebox,.logbox{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:.9rem 1rem}
 .carebox h2,.logbox h2{
-  font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.05rem;
+  font-family:Georgia,serif; font-weight:600; font-size:1.05rem;
   margin:0 0 .4rem;
 }
 .carebox p{margin:.2rem 0; font-size:.92rem; color:var(--soft)}
@@ -129,7 +129,7 @@ dialog{
   box-shadow:6px 6px 0 rgba(34,51,43,.2);
 }
 dialog::backdrop{background:rgba(34,51,43,.45)}
-dialog h2{font-family:"Fraunces",Georgia,serif; margin:.1rem 0 .5rem; font-weight:600}
+dialog h2{font-family:Georgia,serif; margin:.1rem 0 .5rem; font-weight:600}
 dialog p{margin:.3rem 0; color:var(--soft)}
 #name-form{display:flex; gap:.5rem; margin-top:.8rem}
 #name-input{flex:1; border:2px solid var(--leaf-deep); border-radius:10px;

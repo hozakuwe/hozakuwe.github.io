@@ -7,10 +7,8 @@
 *{box-sizing:border-box}
 body{
   margin:0; background:var(--paper); color:var(--ink);
-  font-family:"Nunito",system-ui,sans-serif; font-size:1.05rem; line-height:1.55;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif; font-size:1.05rem; line-height:1.55;
 }
-body::before{content:""; position:fixed; inset:0; pointer-events:none; opacity:.3;
-  background-image:radial-gradient(#1c2b3312 .6px,transparent .6px); background-size:5px 5px; z-index:0}
 .wrap{max-width:760px; margin:0 auto; padding:0 1.2rem; position:relative; z-index:1}
 button{font-family:inherit}
 button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
@@ -18,7 +16,7 @@ button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var
 .top{border-bottom:2px solid var(--ink); background:var(--paper)}
 .top-inner{display:flex; align-items:flex-end; justify-content:space-between; gap:1rem;
   padding-top:1.6rem; padding-bottom:1rem; flex-wrap:wrap}
-.top h1{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:clamp(2.1rem,6vw,3rem);
+.top h1{font-family:Georgia,serif; font-weight:600; font-size:clamp(2.1rem,6vw,3rem);
   margin:0; letter-spacing:-.015em; line-height:1}
 .top h1 em{font-style:italic; font-weight:420}
 .date{margin:.3rem 0 0; color:var(--soft); font-style:italic}
@@ -29,12 +27,12 @@ button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var
 
 /* ---- puzzle cards ---- */
 .puzzle{background:var(--card); border:2px solid var(--ink); border-radius:16px;
-  padding:1.2rem 1.3rem 1.3rem; margin-top:1.4rem; box-shadow:4px 4px 0 rgba(28,43,51,.12)}
+  padding:1.2rem 1.3rem 1.3rem; margin-top:1.4rem;}
 .puzzle.done{border-color:var(--ok)}
 .p-head{display:flex; gap:.7rem; align-items:flex-start; margin-bottom:.7rem}
-.p-head h2{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.3rem; margin:0}
+.p-head h2{font-family:Georgia,serif; font-weight:600; font-size:1.3rem; margin:0}
 .p-head .sub{margin:.1rem 0 0; color:var(--soft); font-size:.92rem}
-.q{font-family:"Newsreader",Georgia,serif; font-size:1.22rem; line-height:1.5;
+.q{font-family:Georgia,serif; font-size:1.22rem; line-height:1.5;
   margin:.2rem 0 1rem; font-style:italic}
 .row{display:flex; gap:.6rem; margin-top:.7rem; flex-wrap:wrap}
 .row input{flex:1; min-width:180px; border:2px solid var(--ink); border-radius:10px;
@@ -48,7 +46,7 @@ button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var
 .verdict.ok{color:var(--ok)} .verdict.no{color:var(--red)} .verdict.hint{color:var(--gold); font-weight:600}
 
 /* calculation */
-.calc-line{font-family:"Fraunces",Georgia,serif; font-size:1.9rem; text-align:center;
+.calc-line{font-family:Georgia,serif; font-size:1.9rem; text-align:center;
   letter-spacing:.06em; margin:.4rem 0 .8rem; font-weight:500}
 .oprows{display:grid; gap:.45rem; max-width:340px; margin:0 auto}
 .oprow{display:grid; grid-template-columns:repeat(4,1fr); gap:.45rem}
@@ -60,15 +58,14 @@ button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var
 .op:disabled{cursor:default}
 
 /* geo */
-#geo-clues{margin:.2rem 0 .4rem; padding-left:1.2rem; font-family:"Newsreader",Georgia,serif; font-size:1.12rem}
-#geo-clues li{margin:.35rem 0; animation:reveal .5s ease}
-@keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-#geo-clues .n{color:var(--soft); font-size:.85rem; font-family:"Nunito",sans-serif}
+#geo-clues{margin:.2rem 0 .4rem; padding-left:1.2rem; font-family:Georgia,serif; font-size:1.12rem}
+#geo-clues li{margin:.35rem 0}
+#geo-clues .n{color:var(--soft); font-size:.85rem; font-family:inherit}
 
 /* summary */
 .summary{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
   border-top:2px solid var(--ink); margin-top:1.6rem; padding:1.2rem 0 .4rem}
-.summary h2{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.2rem; margin:0 0 .3rem}
+.summary h2{font-family:Georgia,serif; font-weight:600; font-size:1.2rem; margin:0 0 .3rem}
 .grid{font-size:1.9rem; letter-spacing:.15em; margin:0}
 .sum-note{color:var(--soft); font-size:.95rem; margin:.3rem 0 0}
 .sum-right{text-align:right}
@@ -87,11 +84,10 @@ button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var
 
 #toast{position:fixed; left:50%; bottom:1.2rem; transform:translateX(-50%);
   background:var(--ink); color:#EFF1EB; border-radius:12px; padding:.6rem 1rem;
-  font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
-#toast.on{opacity:.96}
+  font-weight:700; display:none; pointer-events:none; z-index:50}
+#toast.on{display:block}
 
 @media (max-width:560px){
   .sum-right{text-align:left}
   .calc-line{font-size:1.5rem}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
