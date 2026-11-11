@@ -39,7 +39,7 @@ main{max-width:1060px; margin:0 auto; padding:0 1.2rem 2rem;
 #scene.night{background:#1F2B3E}
 
 /* ---- creature life ---- */
-#creature{transform-origin:300px 352px; animation:bob 2.6s ease-in-out infinite}
+#creature{transform-box:view-box; transform-origin:0 0; animation:bob 2.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translate(300px,300px) scale(var(--k,1))}50%{transform:translate(300px,296px) scale(var(--k,1))}}
 #creature.asleep{animation:none}
 #creature .eyes .lid{transition:opacity .1s}
@@ -53,8 +53,7 @@ main{max-width:1060px; margin:0 auto; padding:0 1.2rem 2rem;
 #zzz text:nth-child(2){animation-delay:.4s}
 #zzz text:nth-child(3){animation-delay:.8s}
 @keyframes floatz{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-6px);opacity:1}}
-.happy-jump{animation:jump .5s ease 2!important}
-@keyframes jump{0%,100%{transform:translate(300px,300px) scale(var(--k,1))}40%{transform:translate(300px,278px) scale(var(--k,1))}}
+.happy-jump{animation:jump .5s ease 2!important}@keyframes jump{0%,100%{transform:translate(300px,300px) scale(var(--k,1))}40%{transform:translate(300px,278px) scale(var(--k,1))}}
 
 #sun,#moon,#clouds{transition:opacity 1.2s}
 

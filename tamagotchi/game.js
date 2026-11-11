@@ -120,6 +120,8 @@ function render() {
   el.bodyshape.setAttribute("ry", isEgg ? 54 : 46);
   el.bodyshape.setAttribute("rx", isEgg ? 40 : 52);
   el.face.setAttribute("opacity", isEgg ? 0 : 1);
+  el.creature.querySelector(".feet").setAttribute("opacity", isEgg ? 0 : 1);
+  el.creature.querySelector(".moss").setAttribute("opacity", isEgg ? 0 : 0.55);
   el.creature.querySelector(".cheeks").setAttribute("opacity", isEgg ? 0 : 0.6);
 
   // growth features
