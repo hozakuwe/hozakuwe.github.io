@@ -1,0 +1,97 @@
+/* Daily Three — paper & ink, same family as the blog */
+:root{
+  --paper:#EFF1EB; --card:#FFFFFF; --ink:#1C2B33; --soft:#5A6E60;
+  --blue:#2C4E86; --red:#AE3B26; --gold:#C99A2C; --green:#6E9A66;
+  --line:#C9CFC4; --ok:#3E7D4E;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Nunito",system-ui,sans-serif; font-size:1.05rem; line-height:1.55;
+}
+body::before{content:""; position:fixed; inset:0; pointer-events:none; opacity:.3;
+  background-image:radial-gradient(#1c2b3312 .6px,transparent .6px); background-size:5px 5px; z-index:0}
+.wrap{max-width:760px; margin:0 auto; padding:0 1.2rem; position:relative; z-index:1}
+button{font-family:inherit}
+button:focus-visible, input:focus-visible, a:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+
+.top{border-bottom:2px solid var(--ink); background:var(--paper)}
+.top-inner{display:flex; align-items:flex-end; justify-content:space-between; gap:1rem;
+  padding-top:1.6rem; padding-bottom:1rem; flex-wrap:wrap}
+.top h1{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:clamp(2.1rem,6vw,3rem);
+  margin:0; letter-spacing:-.015em; line-height:1}
+.top h1 em{font-style:italic; font-weight:420}
+.date{margin:.3rem 0 0; color:var(--soft); font-style:italic}
+.badges{display:flex; gap:.5rem; flex-wrap:wrap}
+.badge{background:var(--card); border:1.5px solid var(--ink); border-radius:999px;
+  padding:.3rem .8rem; font-size:.92rem; color:var(--soft)}
+.badge b{color:var(--ink)}
+
+/* ---- puzzle cards ---- */
+.puzzle{background:var(--card); border:2px solid var(--ink); border-radius:16px;
+  padding:1.2rem 1.3rem 1.3rem; margin-top:1.4rem; box-shadow:4px 4px 0 rgba(28,43,51,.12)}
+.puzzle.done{border-color:var(--ok)}
+.p-head{display:flex; gap:.7rem; align-items:flex-start; margin-bottom:.7rem}
+.p-head h2{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.3rem; margin:0}
+.p-head .sub{margin:.1rem 0 0; color:var(--soft); font-size:.92rem}
+.q{font-family:"Newsreader",Georgia,serif; font-size:1.22rem; line-height:1.5;
+  margin:.2rem 0 1rem; font-style:italic}
+.row{display:flex; gap:.6rem; margin-top:.7rem; flex-wrap:wrap}
+.row input{flex:1; min-width:180px; border:2px solid var(--ink); border-radius:10px;
+  padding:.55rem .8rem; font:inherit; font-weight:700; background:var(--paper)}
+.go{border:2px solid var(--ink); background:var(--blue); color:#fff; border-radius:10px;
+  padding:.55rem 1.1rem; font-weight:800; cursor:pointer}
+.go:hover{filter:brightness(1.1)}
+.ghost{border:2px dashed var(--line); background:none; border-radius:10px;
+  padding:.55rem .9rem; font-weight:700; color:var(--soft); cursor:pointer}
+.verdict{min-height:1.4em; margin:.6rem 0 0; font-weight:800}
+.verdict.ok{color:var(--ok)} .verdict.no{color:var(--red)} .verdict.hint{color:var(--gold); font-weight:600}
+
+/* calculation */
+.calc-line{font-family:"Fraunces",Georgia,serif; font-size:1.9rem; text-align:center;
+  letter-spacing:.06em; margin:.4rem 0 .8rem; font-weight:500}
+.oprows{display:grid; gap:.45rem; max-width:340px; margin:0 auto}
+.oprow{display:grid; grid-template-columns:repeat(4,1fr); gap:.45rem}
+.op{
+  border:2px solid var(--ink); background:var(--paper); border-radius:10px;
+  font-size:1.3rem; font-weight:800; padding:.35rem 0; cursor:pointer; color:var(--ink);
+}
+.op.sel{background:var(--ink); color:#fff}
+.op:disabled{cursor:default}
+
+/* geo */
+#geo-clues{margin:.2rem 0 .4rem; padding-left:1.2rem; font-family:"Newsreader",Georgia,serif; font-size:1.12rem}
+#geo-clues li{margin:.35rem 0; animation:reveal .5s ease}
+@keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+#geo-clues .n{color:var(--soft); font-size:.85rem; font-family:"Nunito",sans-serif}
+
+/* summary */
+.summary{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  border-top:2px solid var(--ink); margin-top:1.6rem; padding:1.2rem 0 .4rem}
+.summary h2{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.2rem; margin:0 0 .3rem}
+.grid{font-size:1.9rem; letter-spacing:.15em; margin:0}
+.sum-note{color:var(--soft); font-size:.95rem; margin:.3rem 0 0}
+.sum-right{text-align:right}
+.share{border:2px solid var(--ink); background:var(--gold); border-radius:10px;
+  padding:.6rem 1rem; font-weight:800; cursor:pointer}
+.next{color:var(--soft); font-size:.9rem; margin:.5rem 0 0; font-style:italic}
+
+.elsewhere{display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1.4rem}
+.elsewhere a{flex:1; min-width:220px; text-align:center; text-decoration:none;
+  border:1.5px dashed var(--line); border-radius:12px; padding:.7rem; color:var(--ink);
+  font-weight:700; background:var(--card)}
+.elsewhere a:hover{border-color:var(--ink)}
+
+.foot{max-width:760px; margin:0 auto; padding:1.4rem 1.2rem 2.6rem; display:flex;
+  justify-content:space-between; gap:.8rem; flex-wrap:wrap; color:var(--soft); font-size:.88rem}
+
+#toast{position:fixed; left:50%; bottom:1.2rem; transform:translateX(-50%);
+  background:var(--ink); color:#EFF1EB; border-radius:12px; padding:.6rem 1rem;
+  font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+#toast.on{opacity:.96}
+
+@media (max-width:560px){
+  .sum-right{text-align:left}
+  .calc-line{font-size:1.5rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
