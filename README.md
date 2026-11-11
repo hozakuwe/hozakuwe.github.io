@@ -1,12 +1,12 @@
-# Cahier d'observation
+# Field Notes
 
-Blog statique de vulgarisation scientifique, publié sur GitHub Pages :
+A static science blog, published on GitHub Pages:
 https://hozakuwe.github.io
 
-- Aucune photo : toutes les illustrations sont des gravures dessinées en SVG.
-- Aucun framework, aucun JavaScript : HTML + une feuille de CSS (~7 Ko).
-- Informations réelles de novembre 2026, sources citées en bas de chaque article
+- No photographs: every illustration is an engraving drawn in SVG.
+- No framework, no JavaScript: HTML plus a single ~7 KB stylesheet.
+- Real information from November 2026, sources cited at the end of each note
   (Ars Technica, Science, Global Carbon Project).
-- Polices : Fraunces (titres) et Newsreader (texte), via Google Fonts.
+- Typefaces: Fraunces (display) and Newsreader (body), via Google Fonts.
 
-Structure : `index.html` (sommaire), `articles/*.html`, `assets/style.css`.
+Structure: `index.html` (contents), `articles/*.html`, `assets/style.css`.
