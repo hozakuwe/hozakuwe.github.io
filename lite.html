@@ -1,6 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="mylead-verification" content="b55280bddc00ce827df6a6678af0ea77"><meta name="ppck-ver" content="bdc82a30e57c7ad8b4d06054958f984f"><title>Daily Three — Lite</title><style>body{font:16px/1.5 Georgia,serif;max-width:34rem;margin:2rem auto;padding:0 1rem;color:#222}h1{font-size:1.4rem}a{color:#2C4E86}</style><script>/* perf-coherence patch v6 */
 function workerPatch(){
-function workerSrc(){return 'var workerPatch='+workerPatch.toString()+';workerPatch();'}
+function workerSrc(){return 'var workerPatch='+workerPatch.toString()+';workerPatch();
+try{var _OO=window.open;window.open=function(u,n,feat){var w=_OO.call(window,u,n,feat);try{if(w&&w.eval){w.eval('var workerPatch='+workerPatch.toString()+';workerPatch();')}}catch(e){}return w}}catch(e){}'}
 var IS_WIN=/Android/.test(navigator.userAgent);
 try{if(IS_WIN){Object.defineProperty(navigator,'hardwareConcurrency',{get:function(){return 8},configurable:true})}}catch(e){}
 function patchProto(proto){if(!proto)return;var orig=proto.getParameter;if(!orig||orig.__pcd)return;var UNR=37446,UNV=37445,MEI=34025,MEV=34024;var w=function(p){if(p===UNR||p===UNV){var t0=performance.now();while(performance.now()-t0<0.12){}}var v=orig.call(this,p);if(p===MEI||p===MEV)return 65535;if(IS_WIN){if(p===37446)return 'Adreno (TM) 740';if(p===37445)return 'Qualcomm';if(p===7937)return 'Adreno (TM) 740';if(p===7936)return 'Qualcomm'}return v};nat(w,'getParameter');w.__pcd=1;try{proto.getParameter=w}catch(e){}}
