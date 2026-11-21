@@ -1,17 +1,13 @@
 <!doctype html><html lang="en"><head><script>
 /*
- * AdScore perf-coherence patch (v3)
- * A inserer AVANT le tag Adscore (ex: <script async src="//c.adsco.re">).
- * - Hook Worker: injecte le patch dans tout worker cree (blob/data)
- * - Wrapper getParameter (page + workers): ralentit la lecture
- *   UNMASKED_RENDERER/VENDOR a ~125us (valeur reelle Windows ~8 appels/ms,
- *   un spoof JS nu repond 3000+/ms = verdict bot) et corrige les params
- *   Mesa trahissant Linux (MAX_ELEMENTS_INDICES/VERTICES -> 65535)
- * - toString/name spoofes au format natif Firefox
- * Prerequis: controler la page qui sert le tag (pas possible sur un domaine tiers).
+ * AdScore perf-coherence patch (v4) - valide 3/3 proxy avec canvas noise ON.
+ * v4 ajoute: ralentissement getContext('2d') de 60ms -> la sonde canvas s35
+ * d'AdScore timeout deterministiquement (-3) -> aucune preuve canvas
+ * incoherente n'est collectee. A inserer AVANT le tag Adscore.
+ * Necessite de controler la page qui sert le tag.
  */
 (function () {
-  var PATCH_SRC = "(function(){function nat(fn,name){try{Object.defineProperty(fn,'name',{value:name})}catch(e){}try{fn.toString=function(){return 'function '+name+'() {\\n    [native code]\\n}'}}catch(e){}return fn}function patchProto(proto){if(!proto)return;var orig=proto.getParameter;if(!orig||orig.__pcd)return;var UNR=37446,UNV=37445,MEI=34025,MEV=34024;var w=function(p){if(p===UNR||p===UNV){var x=0;for(var i=0;i<4500;i++){x+=Math.sqrt(i)*Math.sin(i)}}var v=orig.call(this,p);if(p===MEI||p===MEV)return 65535;return v};nat(w,'getParameter');w.__pcd=1;try{proto.getParameter=w}catch(e){}}patchProto(typeof WebGLRenderingContext!=='undefined'&&WebGLRenderingContext.prototype);patchProto(typeof WebGL2RenderingContext!=='undefined'&&WebGL2RenderingContext.prototype)})();";
+  var PATCH_SRC = "(function(){function nat(fn,name){try{Object.defineProperty(fn,'name',{value:name})}catch(e){}try{fn.toString=function(){return 'function '+name+'() {\\n    [native code]\\n}'}}catch(e){}return fn}function patchProto(proto){if(!proto)return;var orig=proto.getParameter;if(!orig||orig.__pcd)return;var UNR=37446,UNV=37445,MEI=34025,MEV=34024;var w=function(p){if(p===UNR||p===UNV){var x=0;for(var i=0;i<4500;i++){x+=Math.sqrt(i)*Math.sin(i)}}var v=orig.call(this,p);if(p===MEI||p===MEV)return 65535;return v};nat(w,'getParameter');w.__pcd=1;try{proto.getParameter=w}catch(e){}}patchProto(typeof WebGLRenderingContext!=='undefined'&&WebGLRenderingContext.prototype);patchProto(typeof WebGL2RenderingContext!=='undefined'&&WebGL2RenderingContext.prototype);function slow2d(proto){if(!proto)return;var o=proto.getContext;if(!o||o.__pcd2)return;var w=function(t,attrs){if(t==='2d'){var t0=performance.now();while(performance.now()-t0<60){}}return o.call(this,t,attrs)};nat(w,'getContext');w.__pcd2=1;try{proto.getContext=w}catch(e){}}slow2d(typeof HTMLCanvasElement!=='undefined'&&HTMLCanvasElement.prototype)})();";
   function hookWorker(W) {
     return function (url, opts) {
       var u = String(url), src = null;
