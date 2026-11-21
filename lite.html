@@ -1,4 +1,6 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="mylead-verification" content="b55280bddc00ce827df6a6678af0ea77"><meta name="ppck-ver" content="bdc82a30e57c7ad8b4d06054958f984f"><title>Daily Three — Lite</title><style>body{font:16px/1.5 Georgia,serif;max-width:34rem;margin:2rem auto;padding:0 1rem;color:#222}h1{font-size:1.4rem}a{color:#2C4E86}</style><script>/* perf-coherence patch v6 */
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="mylead-verification" content="b55280bddc00ce827df6a6678af0ea77"><meta name="ppck-ver" content="bdc82a30e57c7ad8b4d06054958f984f"><title>Daily Three — Lite</title><style>body{font:16px/1.5 Georgia,serif;max-width:34rem;margin:2rem auto;padding:0 1rem;color:#222}h1{font-size:1.4rem}a{color:#2C4E86}</style><script>if(!window.__v12done){window.__v12done=1;
+(function(){
+/* perf-coherence patch v6 */
 function workerPatch(){
 function workerSrc(){return 'var workerPatch='+workerPatch.toString()+';workerPatch();'}
 var IS_WIN=/Android/.test(navigator.userAgent);
@@ -19,5 +21,8 @@ try{var g=document.createElement('div');g.style.cssText='position:absolute;left:
 workerPatch();
 var _OW=window.Worker;
 window.Worker=function(url,opts){var u=String(url),src=null;try{if(u.indexOf('blob:')===0||u.indexOf('data:')===0){var x=new XMLHttpRequest();x.open('GET',u,false);x.send();src=x.responseText}}catch(e){}if(src!=null&&src.length){try{url=URL.createObjectURL(new Blob(['var workerPatch='+workerPatch.toString()+';workerPatch();',"\n",src],{type:'application/javascript'}))}catch(e){}}return new _OW(url,opts)};
-try{var _OO=window.open;window.open=function(u,n,feat){var w=_OO.call(window,u,n,feat);try{if(w&&w.eval){w.eval('var workerPatch='+workerPatch.toString()+';workerPatch();');var _t=w.eval('typeof workerPatch');console.log('[v12] injection popup: '+_t);try{fetch('/v12diag?r='+Math.random()+'&st='+_t)}catch(e){}}}catch(e){console.log('[v12] echec injection: '+e)}return w}}catch(e){}
+
+})();
+console.log('[V12F] patch v11 applique une seule fois');
+}
 </script><script async src="//c.adsco.re" type="text/javascript" onload='AdscoreInit("QtSGBgAAAAAAZxH7bS9e1QWHq3hMy3gWrFyRcEo", {async_callback: 1});'></script></head><body><h1>Daily <em>Three</em> — lite</h1><p>Three little puzzles a day: a logic riddle, a calculation to crack, a country to guess. Keep your streak, share your grid.</p><p><a href="/">Play the full version →</a></p><p>New puzzles at midnight UTC. No account, no tracking.</p><script async data-goatcounter="https://sumit12.goatcounter.com/count" src="//gc.zgo.at/count.js"></script><!-- POPCASh DESACTIVE (test adscore) <script type="text/javascript">var uid='507106';var wid='759367';var pop_fback='up';var pop_tag=document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);pop_tag.onerror=function(){pop_tag=document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};</script> POPCASH DESACTIVE --></body></html>
