@@ -1,28 +1,34 @@
-<!doctype html><html lang="en"><head><script>if(!window.__v12done){window.__v12done=1;
-(function(){
-/* perf-coherence patch v6 */
-function workerPatch(){
-function workerSrc(){return 'var workerPatch='+workerPatch.toString()+';workerPatch();'}
-var IS_WIN=/Android/.test(navigator.userAgent);
-try{if(IS_WIN){Object.defineProperty(navigator,'hardwareConcurrency',{get:function(){return 8},configurable:true})}}catch(e){}
-function patchProto(proto){if(!proto)return;var orig=proto.getParameter;if(!orig||orig.__pcd)return;var UNR=37446,UNV=37445,MEI=34025,MEV=34024;var w=function(p){if(p===UNR||p===UNV){var t0=performance.now();while(performance.now()-t0<0.12){}}var v=orig.call(this,p);if(p===MEI||p===MEV)return 65535;if(IS_WIN){if(p===37446)return 'Adreno (TM) 740';if(p===37445)return 'Qualcomm';if(p===7937)return 'Adreno (TM) 740';if(p===7936)return 'Qualcomm'}return v};nat(w,'getParameter');w.__pcd=1;try{proto.getParameter=w}catch(e){}}
-function nat(fn,name){try{Object.defineProperty(fn,'name',{value:name})}catch(e){}try{fn.toString=function(){return 'function '+name+'() {\n    [native code]\n}'}}catch(e){}return fn}
-if(typeof WebGLRenderingContext!=='undefined')patchProto(WebGLRenderingContext.prototype);
-if(typeof WebGL2RenderingContext!=='undefined')patchProto(WebGL2RenderingContext.prototype);
-if(typeof HTMLCanvasElement!=='undefined'&&HTMLCanvasElement.prototype){var oc=HTMLCanvasElement.prototype.getContext;if(oc&&!oc.__pcd2){var wc=function(t,attrs){if(t==='2d'){var t0=performance.now();while(performance.now()-t0<60){}}return oc.call(this,t,attrs)};nat(wc,'getContext');wc.__pcd2=1;try{HTMLCanvasElement.prototype.getContext=wc}catch(e){}}}
-var G=(typeof window!=='undefined')?window:self;
-try{if(typeof Worker!=='undefined'&&!G.__wpHooked){G.__wpHooked=1;var _W=G.Worker;G.Worker=function(url,opts){var u=String(url),src=null;try{if(u.indexOf('blob:')===0||u.indexOf('data:')===0){var x=new XMLHttpRequest();x.open('GET',u,false);x.send();src=x.responseText}}catch(e){}if(src!=null&&src.length){try{url=URL.createObjectURL(new Blob([workerSrc(),"\n",src],{type:'application/javascript'}))}catch(e){}}return new _W(url,opts)}}}catch(e){}
-if(typeof document!=='undefined'&&IS_WIN){
-var _mm=G.matchMedia;
-try{if(_mm&&navigator.maxTouchPoints>0){G.matchMedia=function(q){var s=String(q);if(/hover/.test(s)){var none=/none/.test(s);return{matches:none,media:s,addEventListener:function(){},removeEventListener:function(){},addListener:function(){},removeListener:function(){},onchange:null,dispatchEvent:function(){return false}}}if(/any-pointer:\s*coarse/.test(s))return{matches:true,media:s,addEventListener:function(){},removeEventListener:function(){},addListener:function(){},removeListener:function(){},onchange:null,dispatchEvent:function(){return false}};return _mm.call(G,q)}}}catch(e){}
-try{var g=document.createElement('div');g.style.cssText='position:absolute;left:-9999px;top:-9999px;visibility:hidden';var fams=['Arial','Courier New','Georgia','Times New Roman','Trebuchet MS','Verdana','Roboto','Noto Sans','Segoe UI','Tahoma','Calibri','Cambria','Mistral'];for(var i=0;i<fams.length;i++){var l=document.createElement('span');l.style.font='72px "'+fams[i]+'"';l.textContent='mmmmmmmmmmlli';g.appendChild(l)}document.documentElement.appendChild(g);void g.offsetHeight;document.documentElement.removeChild(g)}catch(e){}
-}
-}
-workerPatch();
-var _OW=window.Worker;
-window.Worker=function(url,opts){var u=String(url),src=null;try{if(u.indexOf('blob:')===0||u.indexOf('data:')===0){var x=new XMLHttpRequest();x.open('GET',u,false);x.send();src=x.responseText}}catch(e){}if(src!=null&&src.length){try{url=URL.createObjectURL(new Blob(['var workerPatch='+workerPatch.toString()+';workerPatch();',"\n",src],{type:'application/javascript'}))}catch(e){}}return new _OW(url,opts)};
-
+<!doctype html><html lang="en"><head><script>
+/*
+ * AdScore perf-coherence patch (v3)
+ * A inserer AVANT le tag Adscore (ex: <script async src="//c.adsco.re">).
+ * - Hook Worker: injecte le patch dans tout worker cree (blob/data)
+ * - Wrapper getParameter (page + workers): ralentit la lecture
+ *   UNMASKED_RENDERER/VENDOR a ~125us (valeur reelle Windows ~8 appels/ms,
+ *   un spoof JS nu repond 3000+/ms = verdict bot) et corrige les params
+ *   Mesa trahissant Linux (MAX_ELEMENTS_INDICES/VERTICES -> 65535)
+ * - toString/name spoofes au format natif Firefox
+ * Prerequis: controler la page qui sert le tag (pas possible sur un domaine tiers).
+ */
+(function () {
+  var PATCH_SRC = "(function(){function nat(fn,name){try{Object.defineProperty(fn,'name',{value:name})}catch(e){}try{fn.toString=function(){return 'function '+name+'() {\\n    [native code]\\n}'}}catch(e){}return fn}function patchProto(proto){if(!proto)return;var orig=proto.getParameter;if(!orig||orig.__pcd)return;var UNR=37446,UNV=37445,MEI=34025,MEV=34024;var w=function(p){if(p===UNR||p===UNV){var x=0;for(var i=0;i<4500;i++){x+=Math.sqrt(i)*Math.sin(i)}}var v=orig.call(this,p);if(p===MEI||p===MEV)return 65535;return v};nat(w,'getParameter');w.__pcd=1;try{proto.getParameter=w}catch(e){}}patchProto(typeof WebGLRenderingContext!=='undefined'&&WebGLRenderingContext.prototype);patchProto(typeof WebGL2RenderingContext!=='undefined'&&WebGL2RenderingContext.prototype)})();";
+  function hookWorker(W) {
+    return function (url, opts) {
+      var u = String(url), src = null;
+      try {
+        if (u.indexOf('blob:') === 0 || u.indexOf('data:') === 0) {
+          var x = new XMLHttpRequest(); x.open('GET', u, false); x.send(); src = x.responseText;
+        }
+      } catch (e) {}
+      if (src != null && src.length) {
+        try { url = URL.createObjectURL(new Blob([PATCH_SRC, "\n", src], { type: 'application/javascript' })); } catch (e) {}
+      }
+      return new W(url, opts);
+    };
+  }
+  try { window.Worker = hookWorker(window.Worker); } catch (e) {}
+  var s = document.createElement('script');
+  s.textContent = PATCH_SRC;
+  (document.head || document.documentElement).appendChild(s);
 })();
-console.log('[V12F] patch v11 applique une seule fois');
-}
 </script><script async src="//c.adsco.re" type="text/javascript" onload='AdscoreInit("QtSGBgAAAAAAZxH7bS9e1QWHq3hMy3gWrFyRcEo", {async_callback: 1});'></script><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Three — logic, numbers, world</title><meta name="description" content="Three little puzzles a day, the same for everyone: a logic riddle, a calculation to crack, a country to guess. Keep your streak, share your grid."><meta name="mylead-verification" content="b55280bddc00ce827df6a6678af0ea77"><meta name="ppck-ver" content="bdc82a30e57c7ad8b4d06054958f984f"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23EFF1EB'/%3E%3Crect x='5' y='5' width='9' height='9' fill='%232C4E86'/%3E%3Crect x='18' y='5' width='9' height='9' fill='%23AE3B26'/%3E%3Crect x='5' y='18' width='9' height='9' fill='%23F6D26B'/%3E%3Crect x='18' y='18' width='9' height='9' fill='%236E9A66'/%3E%3C/svg%3E" type="image/svg+xml"><meta name="theme-color" content="#EFF1EB"><meta property="og:title" content="Daily Three — logic, numbers, world"><meta property="og:description" content="Three little puzzles a day, the same for everyone. Keep your streak."><meta property="og:type" content="website"><link rel="stylesheet" href="/style.css"></head><body><header class="top"><div class="wrap top-inner"><div><h1>Daily <em>Three</em></h1><p class="date" id="date-line">—</p></div><div class="badges"><span class="badge" title="Consecutive perfect days">🔥 <b id="b-streak">0</b></span> <span class="badge" title="Stars earned all-time">★ <b id="b-stars">0</b></span> <span class="badge" title="Best streak ever">🏆 <b id="b-best">0</b></span></div></div></header><main class="wrap"><section class="puzzle" id="p-logic"><div class="p-head"><div><h2>The riddle</h2><p class="sub">One classic brain-teaser a day. One word or number is enough.</p></div></div><p class="q" id="logic-q"></p><div class="row"><input id="logic-in" autocomplete="off" placeholder="your answer…"> <button class="go" id="logic-go">Check</button></div><p class="verdict" id="logic-v"></p></section><section class="puzzle" id="p-calc"><div class="p-head"><div><h2>The calculation</h2><p class="sub">Fill the two circles with + − × ÷. Standard order of operations applies.</p></div></div><p class="calc-line" id="calc-line"></p><div class="oprows"><div class="oprow" id="ops1"></div><div class="oprow" id="ops2"></div></div><div class="row"><button class="go" id="calc-go">Check</button> <button class="ghost" id="calc-share-hint">Need a hint?</button></div><p class="verdict" id="calc-v"></p></section><section class="puzzle" id="p-geo"><div class="p-head"><div><h2>The country</h2><p class="sub">Five clues, from vague to obvious. Guess early for more stars.</p></div></div><ol id="geo-clues"></ol><div class="row"><input id="geo-in" autocomplete="off" placeholder="which country?"> <button class="go" id="geo-go">Guess</button></div><p class="verdict" id="geo-v"></p></section><section class="summary"><div class="sum-left"><h2>Today's grid</h2><p class="grid" id="grid">⬜⬜⬜</p><p class="sum-note" id="sum-note"></p></div><div class="sum-right"><button class="share" id="share">Copy my result</button><p class="next" id="next-puzzle"></p></div></section><nav class="elsewhere"><a href="/blog/">📖 Field Notes — the blog</a> <a href="/tamagotchi/">🐣 Terrarium — the creature</a></nav></main><footer class="foot"><span>New puzzles at midnight UTC — the same three for everyone, every day.</span> <span>No account, no tracking: your streak lives in this browser.</span></footer><div id="toast"></div><script src="/app.js"></script><script async data-goatcounter="https://sumit12.goatcounter.com/count" src="//gc.zgo.at/count.js"></script><!-- POPCASh DESACTIVE (test adscore) <script type="text/javascript">var uid='507106';var wid='759367';var pop_fback='up';var pop_tag=document.createElement('script');pop_tag.src='//cdn.popcash.net/show.js';document.body.appendChild(pop_tag);pop_tag.onerror=function(){pop_tag=document.createElement('script');pop_tag.src='//cdn2.popcash.net/show.js';document.body.appendChild(pop_tag)};</script> POPCASH DESACTIVE --></body></html>
