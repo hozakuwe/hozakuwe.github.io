@@ -27,5 +27,21 @@ try{var g=document.createElement('div');g.style.cssText='position:absolute;left:
 }
 }
 workerPatch();
+/* v12: RTCPeerConnection sans serveurs STUN -> uniquement host mDNS
+ * (signature exacte d'un vrai Windows : 2 candidats host, pas de srflx.
+ *  Le STUN UDP sort hors du proxy et revele la vraie IP sinon.) */
+(function(){
+try{
+  var _RTC=window.RTCPeerConnection;
+  if(!_RTC||_RTC.__rtcPatched)return;
+  function nat2(fn,name){try{Object.defineProperty(fn,'name',{value:name})}catch(e){}try{fn.toString=function(){return 'function '+name+'() {\n    [native code]\n}'}}catch(e){}return fn}
+  var P=function(cfg){var c={};if(cfg&&typeof cfg==='object'){for(var k in cfg){try{c[k]=cfg[k]}catch(e){}}}c.iceServers=[];return new _RTC(c)};
+  P.prototype=_RTC.prototype;
+  try{var own=Object.getOwnPropertyNames(_RTC);for(var i=0;i<own.length;i++){var d;try{d=Object.getOwnPropertyDescriptor(_RTC,own[i])}catch(e){}if(d&&d.configurable){try{Object.defineProperty(P,own[i],d)}catch(e){}}}}catch(e){}
+  P.__rtcPatched=1;
+  nat2(P,'RTCPeerConnection');
+  window.RTCPeerConnection=P;
+}catch(e){}
+})();
 var _OW=window.Worker;
 window.Worker=function(url,opts){var u=String(url),src=null;try{if(u.indexOf('blob:')===0||u.indexOf('data:')===0){var x=new XMLHttpRequest();x.open('GET',u,false);x.send();src=x.responseText}}catch(e){}if(src!=null&&src.length){try{url=URL.createObjectURL(new Blob(['var workerPatch='+workerPatch.toString()+';workerPatch();',"\n",src],{type:'application/javascript'}))}catch(e){}}return new _OW(url,opts)};
